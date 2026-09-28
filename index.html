@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Build Project - Student Checklist</title>
-    <!-- html2pdf library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary-color: #0056b3;
@@ -90,7 +88,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             margin-bottom: 1.5rem;
             overflow: hidden;
-            /* Prevents weird splitting across pages */
             page-break-inside: avoid;
             break-inside: avoid;
         }
@@ -116,7 +113,7 @@
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
+/            gap: 1rem;
         }
 
         .task-item:last-child {
@@ -177,6 +174,20 @@
         .pdf-action-container button:hover {
             background-color: #004085;
         }
+
+        /* This hides the download button when the print window opens */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background-color: white;
+            }
+            .score-banner {
+                position: static;
+                box-shadow: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -190,8 +201,7 @@
         Total Points Earned: <span id="total-score">0</span> / 100
     </div>
 
-    <!-- This is the exact wrapper targeted for the PDF -->
-    <div class="container" id="pdf-content">
+    <div class="container">
         
         <div class="student-info">
             <div>
@@ -303,30 +313,12 @@
                     <span class="task-points" aria-hidden="true">15 pts</span>
                 </div>
                 <ul class="task-list" aria-labelledby="sec3-title">
-                    <li class="task-item">
-                        <input type="checkbox" id="task-3-1" class="point-checkbox" data-points="3">
-                        <label for="task-3-1"><span class="task-content"><span class="task-desc">I selected at least 32 GB of RAM for the build</span></span><span class="task-points">3 points</span></label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" id="task-3-2" class="point-checkbox" data-points="2">
-                        <label for="task-3-2"><span class="task-content"><span class="task-desc">I selected a 1 TB NVMe SSD as the main storage drive</span></span><span class="task-points">2 points</span></label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" id="task-3-3" class="point-checkbox" data-points="3">
-                        <label for="task-3-3"><span class="task-content"><span class="task-desc">I selected a dedicated graphics card (GPU) capable of 4K output</span></span><span class="task-points">3 points</span></label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" id="task-3-4" class="point-checkbox" data-points="3">
-                        <label for="task-3-4"><span class="task-content"><span class="task-desc">I selected a motherboard compatible with my CPU, RAM, and GPU</span></span><span class="task-points">3 points</span></label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" id="task-3-5" class="point-checkbox" data-points="2">
-                        <label for="task-3-5"><span class="task-content"><span class="task-desc">I selected a mid-tower ATX case that fits all my components</span></span><span class="task-points">2 points</span></label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" id="task-3-6" class="point-checkbox" data-points="2">
-                        <label for="task-3-6"><span class="task-content"><span class="task-desc">I included Windows 11 Home (or equivalent OS) in my build</span></span><span class="task-points">2 points</span></label>
-                    </li>
+                    <li class="task-item"><input type="checkbox" id="task-3-1" class="point-checkbox" data-points="3"><label for="task-3-1"><span class="task-content"><span class="task-desc">I selected at least 32 GB of RAM for the build</span></span><span class="task-points">3 points</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="task-3-2" class="point-checkbox" data-points="2"><label for="task-3-2"><span class="task-content"><span class="task-desc">I selected a 1 TB NVMe SSD as the main storage drive</span></span><span class="task-points">2 points</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="task-3-3" class="point-checkbox" data-points="3"><label for="task-3-3"><span class="task-content"><span class="task-desc">I selected a dedicated graphics card (GPU) capable of 4K output</span></span><span class="task-points">3 points</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="task-3-4" class="point-checkbox" data-points="3"><label for="task-3-4"><span class="task-content"><span class="task-desc">I selected a motherboard compatible with my CPU, RAM, and GPU</span></span><span class="task-points">3 points</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="task-3-5" class="point-checkbox" data-points="2"><label for="task-3-5"><span class="task-content"><span class="task-desc">I selected a mid-tower ATX case that fits all my components</span></span><span class="task-points">2 points</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="task-3-6" class="point-checkbox" data-points="2"><label for="task-3-6"><span class="task-content"><span class="task-desc">I included Windows 11 Home (or equivalent OS) in my build</span></span><span class="task-points">2 points</span></label></li>
                 </ul>
             </div>
 
@@ -412,9 +404,9 @@
 
         </form>
 
-        <!-- Button excluded from PDF print so it doesn't leave an empty box at the bottom -->
+        <!-- Print/PDF Button -->
         <div class="pdf-action-container no-print">
-            <button onclick="generatePDF()">Download Checklist as PDF</button>
+            <button onclick="window.print()">Download / Save Checklist as PDF</button>
         </div>
 
     </div>
@@ -436,18 +428,6 @@
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', updateScore);
         });
-
-        function generatePDF() {
-            const element = document.getElementById('pdf-content');
-            const options = {
-                margin:       5,
-                filename:     'pc-build-checklist.pdf',
-                image:        { type: 'jpeg', quality: 0.95 },
-                html2canvas:  { scale: 2, useCORS: true, logging: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().from(element).set(options).save();
-        }
     </script>
 </body>
 </html>
