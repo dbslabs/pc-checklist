@@ -34,11 +34,13 @@
         .score-banner {
             background: #ffffff;
             border-bottom: 2px solid var(--border-color);
+            border-top: 2px solid var(--border-color);
             padding: 1rem;
             text-align: center;
             font-size: 1.25rem;
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
         }
 
         .score-banner span {
@@ -48,7 +50,7 @@
 
         .container {
             max-width: 800px;
-            margin: 2rem auto;
+            margin: 0 auto 2rem auto;
             padding: 0 1rem;
         }
 
@@ -187,13 +189,13 @@
 </head>
 <body>
 
-    <header>
-        <h1>PC Build Project</h1>
-        <p>Student Accessible Interactive Checklist | Budget: $2,500</p>
-    </header>
-
-    <!-- Wrapped everything including the score banner inside id="pdf-content" -->
+    <!-- Wrapped EVERYTHING (Header, Score Banner, and Container) inside pdf-content -->
     <div id="pdf-content">
+        <header>
+            <h1>PC Build Project</h1>
+            <p>Student Accessible Interactive Checklist | Budget: $2,500</p>
+        </header>
+
         <!-- Live region so screen readers announce score updates dynamically -->
         <div class="score-banner" aria-live="polite">
             Total Points Earned: <span id="total-score">0</span> / 100
@@ -679,11 +681,10 @@
                 </div>
 
             </form>
-
         </div>
     </div>
 
-    <!-- PDF Export Button Area (Outside pdf-content so button itself won't print onto the PDF) -->
+    <!-- PDF Export Button Area (Kept outside so the button itself isn't printed on the paper) -->
     <div class="pdf-action-container">
         <button onclick="generatePDF()">Download Checklist as PDF</button>
     </div>
