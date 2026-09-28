@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Build Project - Student Checklist</title>
-    <!-- html2pdf library added here -->
+    <!-- Include html2pdf library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -158,10 +158,16 @@
             font-size: 0.95rem;
         }
 
-        /* Styling for the PDF Download Button container */
+        .task-subtext {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        /* PDF Export Button Styling */
         .pdf-action-container {
             text-align: center;
-            margin: 2rem 0;
+            margin: 2rem 0 4rem 0;
         }
 
         .pdf-action-container button {
@@ -194,7 +200,7 @@
         Total Points Earned: <span id="total-score">0</span> / 100
     </div>
 
-    <!-- Added id="pdf-content" around everything you want captured in the PDF -->
+    <!-- Wrapped everything to be captured inside id="pdf-content" -->
     <div class="container" id="pdf-content">
         
         <div class="student-info">
@@ -660,7 +666,7 @@
                     <li class="task-item">
                         <input type="checkbox" id="task-8-4" class="point-checkbox" data-points="2">
                         <label for="task-8-4">
-                            <span class="task-content"><span class="task-desc">My presentation covers all required components and cost requirements</span></span>
+                            <span class="task-content"><span class="task-desc">My presentation covers all required components and mentions the total cost</span></span>
                             <span class="task-points">2 points</span>
                         </label>
                     </li>
@@ -678,7 +684,7 @@
 
     </div>
 
-    <!-- Download PDF Button -->
+    <!-- PDF Export Button Area -->
     <div class="pdf-action-container">
         <button onclick="generatePDF()">Download Checklist as PDF</button>
     </div>
@@ -702,7 +708,7 @@
         });
 
         function generatePDF() {
-            // Force window to top so html2pdf doesn't read scroll offset as empty vertical space
+            // Force window to scroll top to prevent html2pdf from catching offset space
             window.scrollTo(0, 0);
 
             const element = document.getElementById('pdf-content');
